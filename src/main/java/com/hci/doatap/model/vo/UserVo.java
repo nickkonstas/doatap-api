@@ -1,52 +1,46 @@
-package com.hci.doatap.model;
+package com.hci.doatap.model.vo;
 
-import javax.persistence.*;
+import com.hci.doatap.model.User;
 
-@Entity
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, updatable = false)
+import javax.persistence.Column;
+
+public class UserVo {
     private Long id;
 
-    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "father_name", nullable = false)
     private String fathersName;
 
-    @Column(name = "mother_name", nullable = false)
     private String mothersName;
 
-    @Column(name = "email_adress", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password", nullable = false)
-    private String password;
-
-    @Column(name = "social_security_number", nullable = false)
     private String SSN;
 
-    @Column(name = "is_admin", nullable = false)
     private boolean isAdmin;
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
+    public UserVo(Long id, String firstName, String lastName, String fathersName, String mothersName, String email, String SSN, boolean isAdmin) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.fathersName = fathersName;
+        this.mothersName = mothersName;
         this.email = email;
+        this.SSN = SSN;
+        this.isAdmin = isAdmin;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public UserVo(User user) {
+        this.id = user.getId();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.fathersName = user.getFathersName();
+        this.mothersName = user.getMothersName();
+        this.email = user.getEmail();
+        this.SSN = user.getSSN();
+        this.isAdmin = user.isAdmin();
     }
 
     public Long getId() {
@@ -73,14 +67,6 @@ public class User {
         this.lastName = lastName;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
-    }
-
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
-    }
-
     public String getFathersName() {
         return fathersName;
     }
@@ -97,11 +83,27 @@ public class User {
         this.mothersName = mothersName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getSSN() {
         return SSN;
     }
 
     public void setSSN(String SSN) {
         this.SSN = SSN;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }
