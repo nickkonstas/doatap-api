@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/")
 public class LoginController {
 
-    @Autowired
     private UserService userService;
+    @Autowired
+    public LoginController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/login")
     public ResponseEntity<Object> getUser(@RequestBody User user) {

@@ -1,12 +1,14 @@
 package com.hci.doatap.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 
 @Entity
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, updatable = false)
+    @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
     @Column(name = "first_name", nullable = false)
@@ -32,6 +34,14 @@ public class User {
 
     @Column(name = "is_admin", nullable = false)
     private boolean isAdmin;
+
+    // One-to-one relationship with UserDetails
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    @JsonManagedReference
+    private UserDetails userDetails;
+
+    public User() {
+    }
 
     public String getEmail() {
         return email;
@@ -71,6 +81,14 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public UserDetails getUserDetails() {
+        return userDetails;
+    }
+
+    public void setUserDetails(UserDetails userDetails) {
+        this.userDetails = userDetails;
     }
 
     public boolean isAdmin() {
