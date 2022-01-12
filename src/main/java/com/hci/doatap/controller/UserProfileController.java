@@ -3,6 +3,7 @@ package com.hci.doatap.controller;
 
 import com.hci.doatap.model.User;
 import com.hci.doatap.model.vo.UpdateEmail;
+import com.hci.doatap.model.vo.UpdatePassword;
 import com.hci.doatap.model.vo.UserVo;
 import com.hci.doatap.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -45,6 +46,22 @@ public class UserProfileController {
 
         String errorMessage = "Email Not Found";
         return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
+    }
 
+    @PutMapping("/profile/changePass")
+    public ResponseEntity<Object> updateUserPassword(@RequestBody UpdatePassword pass) {
+
+        if (userService.validPass(pass) == false) {
+            String errorMessage = "Invalid password, no user with that email and password";
+            return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+        }
+
+        UserVo user = userService.updatedPassword(pass);
+        if (user != null) {
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+
+        String errorMessage = "Email Not Found";
+        return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
     }
 }
