@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-public class UserDetails {
+public class UserPersonalInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, updatable = false)
@@ -76,9 +76,9 @@ public class UserDetails {
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
     @JsonBackReference
-    private User user;
+    private AppUser appUser;
 
-    public UserDetails() {
+    public UserPersonalInfo() {
     }
 
     public Long getId() {
@@ -209,11 +209,11 @@ public class UserDetails {
         this.issuingAuthority = issuingAuthority;
     }
 
-    public User getUser() {
-        return user;
+    public AppUser getUser() {
+        return appUser;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(AppUser appUser) {
+        this.appUser = appUser;
     }
 }

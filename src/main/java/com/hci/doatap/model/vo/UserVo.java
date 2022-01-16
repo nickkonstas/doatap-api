@@ -1,8 +1,6 @@
 package com.hci.doatap.model.vo;
 
-import com.hci.doatap.model.User;
-
-import javax.persistence.Column;
+import com.hci.doatap.model.AppUser;
 
 public class UserVo {
     private Long id;
@@ -32,15 +30,15 @@ public class UserVo {
         this.isAdmin = isAdmin;
     }
 
-    public UserVo(User user) {
-        this.id = user.getId();
-        this.firstName = user.getFirstName();
-        this.lastName = user.getLastName();
-        this.fathersName = user.getFathersName();
-        this.mothersName = user.getMothersName();
-        this.email = user.getEmail();
-        this.SSN = user.getSSN();
-        this.isAdmin = user.isAdmin();
+    public UserVo(AppUser appUser) {
+        this.id = appUser.getId();
+        this.firstName = appUser.getFirstName();
+        this.lastName = appUser.getLastName();
+        this.fathersName = appUser.getFathersName();
+        this.mothersName = appUser.getMothersName();
+        this.email = appUser.getEmail();
+        this.SSN = appUser.getSSN();
+        this.isAdmin = appUser.isAdmin();
     }
 
     public Long getId() {

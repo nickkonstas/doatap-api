@@ -1,49 +1,105 @@
 package com.hci.doatap.service;
 
-import com.hci.doatap.model.User;
-import com.hci.doatap.model.UserDetails;
+import com.hci.doatap.model.AppUser;
+import com.hci.doatap.model.Role;
+import com.hci.doatap.model.UserPersonalInfo;
 import com.hci.doatap.model.vo.UpdateEmail;
 import com.hci.doatap.model.vo.UpdatePassword;
 import com.hci.doatap.model.vo.UserVo;
-import com.hci.doatap.repository.UserDetailsRepository;
+import com.hci.doatap.repository.PersonalInfoRepository;
+import com.hci.doatap.repository.RoleRepository;
 import com.hci.doatap.repository.UserRepository;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Service
-public class UserService {
+@Transactional
+public class UserService implements UserDetailsService{
+
     private UserRepository userRepository;
-    private UserDetailsRepository userDetailsRepository;
+    private PersonalInfoRepository personalInfoRepository;
+    private RoleRepository roleRepository;
+    private BCryptPasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, UserDetailsRepository userDetailsRepository) {
+    public UserService(UserRepository userRepository, PersonalInfoRepository personalInfoRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.userDetailsRepository = userDetailsRepository;
+        this.personalInfoRepository = personalInfoRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public User getUser(Long id) {
-        User user = userRepository.findById(id).orElse(new User());
-        return user;
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        AppUser appUser = userRepository.findByEmail(username);
+
+        if (appUser == null) {
+            throw new UsernameNotFoundException("User not found in the database");
+        }
+
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        appUser.getRoles().forEach(role -> {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        });
+
+        // Spring security user
+        return new User(appUser.getEmail(), appUser.getPassword(), authorities);
     }
 
-    public UserVo login(User user) {
-        User returnedUser = userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
-        if (returnedUser == null) {
+    public AppUser saveUser(AppUser user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
+
+    public Role saveRole(Role role) {
+        return roleRepository.save(role);
+    }
+
+    public void addRoleToUser(String email, String roleName) {
+        AppUser user = userRepository.findByEmail(email);
+        Role role = roleRepository.findByName(roleName);
+        user.getRoles().add(role);
+        userRepository.save(user);
+    }
+
+    public AppUser getUser(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public AppUser getUser(Long id) {
+        AppUser appUser = userRepository.findById(id).orElse(new AppUser());
+        return appUser;
+    }
+
+    public UserVo login(AppUser appUser) {
+        AppUser returnedAppUser = userRepository.findByEmailAndPassword(appUser.getEmail(), appUser.getPassword());
+        if (returnedAppUser == null) {
             return null;
         }
-        return new UserVo(returnedUser);
+        return new UserVo(returnedAppUser);
     }
 
     public UserVo profile(String email) {
-        User returnedUser = userRepository.findByEmail(email);
-        if (returnedUser == null) {
+        AppUser returnedAppUser = userRepository.findByEmail(email);
+        if (returnedAppUser == null) {
             return null;
         }
-        return new UserVo(returnedUser);
+        return new UserVo(returnedAppUser);
     }
 
     public boolean emailExist(UpdateEmail emailForm) {
         String newEmail = emailForm.getNewEmail();
-        User existingUser = userRepository.findByEmail(newEmail);
-        if (existingUser != null)
+        AppUser existingAppUser = userRepository.findByEmail(newEmail);
+        if (existingAppUser != null)
             return true;
         return false;
     }
@@ -52,8 +108,8 @@ public class UserService {
         String oldPass = passwordForm.getOldPass();
         String email = passwordForm.getEmail();
 
-        User existingUser = userRepository.findByEmailAndPassword(email, oldPass);
-        if (existingUser != null)
+        AppUser existingAppUser = userRepository.findByEmailAndPassword(email, oldPass);
+        if (existingAppUser != null)
             return true;
         return false;
     }
@@ -62,39 +118,39 @@ public class UserService {
         String oldEmail = emailForm.getOldEmail();
         String newEmail = emailForm.getNewEmail();
 
-        User returnedUser = userRepository.findByEmail(oldEmail);
-        if (returnedUser == null) {
+        AppUser returnedAppUser = userRepository.findByEmail(oldEmail);
+        if (returnedAppUser == null) {
             return null;
         }
         // Here maybe check if the new email is already used
-        returnedUser.setEmail(newEmail);
+        returnedAppUser.setEmail(newEmail);
 
-        userRepository.save(returnedUser);
-        return new UserVo(returnedUser);
+        userRepository.save(returnedAppUser);
+        return new UserVo(returnedAppUser);
     }
 
     public UserVo updatedPassword(UpdatePassword pass) {
         String email = pass.getEmail();
         String newPass = pass.getNewPass();
 
-        User returnedUser = userRepository.findByEmail(email);
-        if (returnedUser == null) {
+        AppUser returnedAppUser = userRepository.findByEmail(email);
+        if (returnedAppUser == null) {
             return null;
         }
 
-        returnedUser.setPassword(newPass);
-        userRepository.save(returnedUser);
-        return new UserVo(returnedUser);
+        returnedAppUser.setPassword(newPass);
+        userRepository.save(returnedAppUser);
+        return new UserVo(returnedAppUser);
     }
 
-    public UserDetails getPersonalInfo(Long id) {
-        User user = userRepository.getById(id);
-        return user.getUserDetails();
+    public UserPersonalInfo getPersonalInfo(Long id) {
+        AppUser appUser = userRepository.getById(id);
+        return appUser.getUserDetails();
     }
 
-    public UserDetails savePersonalInfo(UserDetails userDetails) {
-        userDetails = userDetailsRepository.save(userDetails);
-        return userDetails;
+    public UserPersonalInfo savePersonalInfo(UserPersonalInfo userPersonalInfo) {
+        userPersonalInfo = personalInfoRepository.save(userPersonalInfo);
+        return userPersonalInfo;
     }
 
 }

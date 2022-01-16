@@ -3,9 +3,11 @@ package com.hci.doatap.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
-public class User {
+public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, updatable = false)
@@ -32,15 +34,43 @@ public class User {
     @Column(name = "social_security_number", nullable = false)
     private String SSN;
 
-    @Column(name = "is_admin", nullable = false)
+    @Column(name = "is_admin")
     private boolean isAdmin;
 
-    // One-to-one relationship with UserDetails
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    @JsonManagedReference
-    private UserDetails userDetails;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Collection<Role> roles = new ArrayList<>();
 
-    public User() {
+    // One-to-one relationship with UserDetails
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "appUser")
+    @JsonManagedReference
+    private UserPersonalInfo userPersonalInfo;
+
+    public AppUser() {
+    }
+
+    public AppUser(Long id, String firstName, String lastName, String fathersName, String mothersName, String email, String password, String SSN, boolean isAdmin, UserPersonalInfo userPersonalInfo) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.fathersName = fathersName;
+        this.mothersName = mothersName;
+        this.email = email;
+        this.password = password;
+        this.SSN = SSN;
+        this.isAdmin = isAdmin;
+        this.userPersonalInfo = userPersonalInfo;
+    }
+
+    public AppUser(Long id, String firstName, String lastName, String fathersName, String mothersName, String email, String password, String SSN, Collection<Role> roles) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.fathersName = fathersName;
+        this.mothersName = mothersName;
+        this.email = email;
+        this.password = password;
+        this.SSN = SSN;
+        this.roles = roles;
     }
 
     public String getEmail() {
@@ -83,12 +113,12 @@ public class User {
         this.lastName = lastName;
     }
 
-    public UserDetails getUserDetails() {
-        return userDetails;
+    public UserPersonalInfo getUserDetails() {
+        return userPersonalInfo;
     }
 
-    public void setUserDetails(UserDetails userDetails) {
-        this.userDetails = userDetails;
+    public void setUserDetails(UserPersonalInfo userPersonalInfo) {
+        this.userPersonalInfo = userPersonalInfo;
     }
 
     public boolean isAdmin() {
@@ -121,5 +151,21 @@ public class User {
 
     public void setSSN(String SSN) {
         this.SSN = SSN;
+    }
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
+    }
+
+    public UserPersonalInfo getUserPersonalInfo() {
+        return userPersonalInfo;
+    }
+
+    public void setUserPersonalInfo(UserPersonalInfo userPersonalInfo) {
+        this.userPersonalInfo = userPersonalInfo;
     }
 }

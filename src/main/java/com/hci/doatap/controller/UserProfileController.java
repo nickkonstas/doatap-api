@@ -1,7 +1,6 @@
 package com.hci.doatap.controller;
 
 
-import com.hci.doatap.model.User;
 import com.hci.doatap.model.vo.UpdateEmail;
 import com.hci.doatap.model.vo.UpdatePassword;
 import com.hci.doatap.model.vo.UserVo;
