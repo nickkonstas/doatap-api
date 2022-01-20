@@ -112,4 +112,20 @@ public class Application {
     public void setUser(AppUser user) {
         this.user = user;
     }
+
+    public UserPersonalInfo getUserPersonalInfo() {
+        return userPersonalInfo;
+    }
+
+    public void setUserPersonalInfo(UserPersonalInfo userPersonalInfo) {
+        this.userPersonalInfo = userPersonalInfo;
+    }
+
+    public TitleOfStudies getTitleOfStudies() {
+        return titleOfStudies;
+    }
+
+    public void setTitleOfStudies(TitleOfStudies titleOfStudies) {
+        this.titleOfStudies = titleOfStudies;
+    }
 }

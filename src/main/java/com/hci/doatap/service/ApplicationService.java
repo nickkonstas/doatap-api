@@ -27,6 +27,13 @@ public class ApplicationService {
         applicationRepository.save(application);
         userRepository.save(user);
         return application;
+    }
 
+    public Application save(Application application) {
+        return applicationRepository.save(application);
+    }
+
+    public Application getApplicationByUser(AppUser user) {
+        return applicationRepository.findByUser(user);
     }
 }
