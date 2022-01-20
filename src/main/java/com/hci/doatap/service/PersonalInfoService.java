@@ -17,8 +17,8 @@ public class PersonalInfoService {
         this.personalInfoRepository = personalInfoRepository;
     }
 
-    public UserPersonalInfo savePersonalInfo(UserPersonalInfo userPersonalInfo, AppUser user) {
-        Application application = applicationService.getApplicationByUser(user);
+    public UserPersonalInfo savePersonalInfo(UserPersonalInfo userPersonalInfo, Long applicationId) {
+        Application application = applicationService.getApplicationById(applicationId);
         application.setUserPersonalInfo(userPersonalInfo);
         applicationService.save(application);
 

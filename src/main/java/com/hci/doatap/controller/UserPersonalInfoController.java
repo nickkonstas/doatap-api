@@ -33,12 +33,9 @@ public class UserPersonalInfoController {
         return null;
     }
 
-    @PostMapping("/user/postInfo/")
-    public ResponseEntity<Object> saveUserDetails(@RequestBody UserPersonalInfo userPersonalInfo) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userName = authentication.getName();
-        AppUser user = userService.getUser(userName);
-        UserPersonalInfo info = personalInfoService.savePersonalInfo(userPersonalInfo, user);
+    @PostMapping("/user/postInfo/{id}")
+    public ResponseEntity<Object> saveUserDetails(@RequestBody UserPersonalInfo userPersonalInfo, @PathVariable("id") Long applicationId) {
+        UserPersonalInfo info = personalInfoService.savePersonalInfo(userPersonalInfo, applicationId);
 
         if (info == null) {
             String errorMessage = "Sorry, something went wrong";

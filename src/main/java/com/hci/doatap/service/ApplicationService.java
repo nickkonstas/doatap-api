@@ -7,6 +7,8 @@ import com.hci.doatap.repository.ApplicationRepository;
 import com.hci.doatap.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ApplicationService {
 
@@ -33,7 +35,8 @@ public class ApplicationService {
         return applicationRepository.save(application);
     }
 
-    public Application getApplicationByUser(AppUser user) {
-        return applicationRepository.findByUser(user);
+    public Application getApplicationById(Long id) {
+        Application application = applicationRepository.findById(id).orElse(new Application());
+        return application;
     }
 }
