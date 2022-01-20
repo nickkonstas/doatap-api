@@ -114,16 +114,16 @@ public class UserService implements UserDetailsService{
         return false;
     }
 
-    public boolean validPass(UpdatePassword passwordForm) {
-        String oldPass = passwordForm.getOldPass();
-        String email = passwordForm.getEmail();
-
-        //AppUser existingAppUser = userRepository.findByEmailAndPassword(email, oldPass);
-        AppUser existingAppUser = getUser(email);
-        if (existingAppUser != null)
-            return true;
-        return false;
-    }
+//    public boolean validPass(UpdatePassword passwordForm) {
+//        String oldPass = passwordForm.getOldPass();
+//        String email = passwordForm.getEmail();
+//
+//        //AppUser existingAppUser = userRepository.findByEmailAndPassword(email, oldPass);
+//        AppUser existingAppUser = getUser(email);
+//        if (existingAppUser != null)
+//            return true;
+//        return false;
+//    }
 
     public UserVo updateEmail(UpdateEmail emailForm) {
         String oldEmail = emailForm.getOldEmail();
@@ -140,20 +140,20 @@ public class UserService implements UserDetailsService{
         return new UserVo(returnedAppUser);
     }
 
-    public UserVo updatedPassword(UpdatePassword pass) {
-        String email = pass.getEmail();
-        String newPass = pass.getNewPass();
-
-        AppUser returnedAppUser = userRepository.findByEmail(email);
-        if (returnedAppUser == null) {
-            return null;
-        }
-
-        returnedAppUser.setPassword(newPass);
-        //userRepository.save(returnedAppUser);
-        saveUser(returnedAppUser);
-        return new UserVo(returnedAppUser);
-    }
+//    public UserVo updatedPassword(UpdatePassword pass) {
+//        String email = pass.getEmail();
+//        String newPass = pass.getNewPass();
+//
+//        AppUser returnedAppUser = userRepository.findByEmail(email);
+//        if (returnedAppUser == null) {
+//            return null;
+//        }
+//
+//        returnedAppUser.setPassword(newPass);
+//        //userRepository.save(returnedAppUser);
+//        saveUser(returnedAppUser);
+//        return new UserVo(returnedAppUser);
+//    }
 
 //    public UserPersonalInfo getPersonalInfo(Long id) {
 //        AppUser appUser = userRepository.getById(id);

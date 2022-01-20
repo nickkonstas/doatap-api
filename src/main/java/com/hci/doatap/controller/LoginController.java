@@ -28,10 +28,10 @@ public class LoginController {
 //        }
 //        String errorLoginMessage = "User not found";
 //        return new ResponseEntity<>(errorLoginMessage, HttpStatus.UNAUTHORIZED);
+////    }
+//    @PostMapping("/login")
+//    public String getUser(@RequestBody AppUser user) {
+//        return "Hello";
 //    }
-    @PostMapping("/login")
-    public String getUser(@RequestBody AppUser user) {
-        return "Hello";
-    }
-
+//
 }
