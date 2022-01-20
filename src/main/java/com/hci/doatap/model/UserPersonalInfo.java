@@ -80,7 +80,7 @@ public class UserPersonalInfo {
 //    private AppUser appUser;
 
     @OneToOne(targetEntity = Application.class, mappedBy = "userPersonalInfo", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    //@JsonManagedReference
     private Application application;
 
     public UserPersonalInfo() {

@@ -48,7 +48,7 @@ public class TitleOfStudies {
     private String remoteInstitutionOfStudies;
 
     @OneToOne(targetEntity = Application.class, mappedBy = "titleOfStudies", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    //@JsonManagedReference
     private Application application;
 
     public TitleOfStudies() {
