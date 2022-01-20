@@ -1,5 +1,6 @@
 package com.hci.doatap.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -45,6 +46,10 @@ public class TitleOfStudies {
 
     @Column(name = "remote_university")
     private String remoteInstitutionOfStudies;
+
+    @OneToOne(targetEntity = Application.class, mappedBy = "titleOfStudies", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Application application;
 
     public TitleOfStudies() {
     }

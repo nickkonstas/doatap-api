@@ -1,12 +1,16 @@
 package com.hci.doatap.controller;
 
 
+import com.hci.doatap.model.AppUser;
 import com.hci.doatap.model.vo.UpdateEmail;
 import com.hci.doatap.model.vo.UpdatePassword;
 import com.hci.doatap.model.vo.UserVo;
 import com.hci.doatap.service.UserService;
+import org.apache.tomcat.util.http.parser.MediaType;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,10 +23,10 @@ public class UserProfileController {
         this.userService = userService;
     }
 
-    @GetMapping("/profile/{email}")
+    @GetMapping("/user/profile/{email}")
     public ResponseEntity<Object> getUserProfile(@PathVariable("email") String userEmail) {
 
-        UserVo user = userService.profile(userEmail);
+        UserVo user = userService.getProfile(userEmail);
         if (user != null) {
             return new ResponseEntity<>(user, HttpStatus.OK);
         }
@@ -30,7 +34,19 @@ public class UserProfileController {
         return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
     }
 
-    @PutMapping("/profile/changeEmail")
+    // We have the email from the toke inside the SecurityContextHolder
+    // so it's not required as a path variable
+
+    @GetMapping("/user/profile")
+    public ResponseEntity<Object> profile() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+        UserVo user = userService.getProfile(userName);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+
+    }
+
+    @PutMapping(value = "/user/profile/changeEmail")
     public ResponseEntity<Object> updateUserEmail(@RequestBody UpdateEmail emailForm) {
 
         if (userService.emailExist(emailForm)) {
@@ -47,10 +63,10 @@ public class UserProfileController {
         return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
     }
 
-    @PutMapping("/profile/changePass")
+    @PutMapping("/user/profile/changePass")
     public ResponseEntity<Object> updateUserPassword(@RequestBody UpdatePassword pass) {
 
-        if (userService.validPass(pass) == false) {
+        if (!userService.validPass(pass)) {
             String errorMessage = "Invalid password, no user with that email and password";
             return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
         }
@@ -63,4 +79,5 @@ public class UserProfileController {
         String errorMessage = "Email Not Found";
         return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
     }
+
 }

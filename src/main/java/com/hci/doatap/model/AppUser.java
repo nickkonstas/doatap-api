@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 
 @Entity
 public class AppUser {
@@ -40,27 +41,33 @@ public class AppUser {
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
 
-    // One-to-one relationship with UserDetails
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "appUser")
+    // One-to-many relationship with applications
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private UserPersonalInfo userPersonalInfo;
+    private Set<Application> applications;
+
+
+//    // One-to-one relationship with UserDetails
+//    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "appUser")
+//    @JsonManagedReference
+//    private UserPersonalInfo userPersonalInfo;
 
     public AppUser() {
     }
 
-    public AppUser(Long id, String firstName, String lastName, String fathersName, String mothersName, String email, String password, String SSN, boolean isAdmin, UserPersonalInfo userPersonalInfo) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.fathersName = fathersName;
-        this.mothersName = mothersName;
-        this.email = email;
-        this.password = password;
-        this.SSN = SSN;
-        this.isAdmin = isAdmin;
-        this.userPersonalInfo = userPersonalInfo;
-    }
-
+//    public AppUser(Long id, String firstName, String lastName, String fathersName, String mothersName, String email, String password, String SSN, boolean isAdmin) {
+//        this.id = id;
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.fathersName = fathersName;
+//        this.mothersName = mothersName;
+//        this.email = email;
+//        this.password = password;
+//        this.SSN = SSN;
+//        this.isAdmin = isAdmin;
+//        //this.userPersonalInfo = userPersonalInfo;
+//    }
+//
     public AppUser(Long id, String firstName, String lastName, String fathersName, String mothersName, String email, String password, String SSN, Collection<Role> roles) {
         this.id = id;
         this.firstName = firstName;
@@ -72,6 +79,21 @@ public class AppUser {
         this.SSN = SSN;
         this.roles = roles;
     }
+
+
+//    public AppUser(Long id, String firstName, String lastName, String fathersName, String mothersName, String email, String password, String SSN, boolean isAdmin, Collection<Role> roles, Set<Application> applications) {
+//        this.id = id;
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.fathersName = fathersName;
+//        this.mothersName = mothersName;
+//        this.email = email;
+//        this.password = password;
+//        this.SSN = SSN;
+//        this.isAdmin = isAdmin;
+//        this.roles = roles;
+//        this.applications = applications;
+//    }
 
     public String getEmail() {
         return email;
@@ -113,13 +135,13 @@ public class AppUser {
         this.lastName = lastName;
     }
 
-    public UserPersonalInfo getUserDetails() {
-        return userPersonalInfo;
-    }
-
-    public void setUserDetails(UserPersonalInfo userPersonalInfo) {
-        this.userPersonalInfo = userPersonalInfo;
-    }
+//    public UserPersonalInfo getUserDetails() {
+//        return userPersonalInfo;
+//    }
+//
+//    public void setUserDetails(UserPersonalInfo userPersonalInfo) {
+//        this.userPersonalInfo = userPersonalInfo;
+//    }
 
     public boolean isAdmin() {
         return isAdmin;
@@ -161,11 +183,19 @@ public class AppUser {
         this.roles = roles;
     }
 
-    public UserPersonalInfo getUserPersonalInfo() {
-        return userPersonalInfo;
+    public Set<Application> getApplications() {
+        return applications;
     }
 
-    public void setUserPersonalInfo(UserPersonalInfo userPersonalInfo) {
-        this.userPersonalInfo = userPersonalInfo;
+    public void setApplications(Set<Application> applications) {
+        this.applications = applications;
     }
+
+    //    public UserPersonalInfo getUserPersonalInfo() {
+//        return userPersonalInfo;
+//    }
+//
+//    public void setUserPersonalInfo(UserPersonalInfo userPersonalInfo) {
+//        this.userPersonalInfo = userPersonalInfo;
+//    }
 }

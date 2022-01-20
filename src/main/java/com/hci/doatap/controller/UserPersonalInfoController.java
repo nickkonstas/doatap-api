@@ -17,24 +17,26 @@ public class UserPersonalInfoController {
         this.userService = userService;
     }
 
-    @GetMapping("/userInfo/{id}")
+    @GetMapping("/user/info/{id}")
     public ResponseEntity<Object> getUserDetails(@PathVariable("id") Long userId) {
-        UserPersonalInfo userPersonalInfo = userService.getPersonalInfo(userId);
-        if (userPersonalInfo != null) {
-            return new ResponseEntity<>(userPersonalInfo, HttpStatus.OK);
-        }
-        String errorLoginMessage = "Sorry, something went wrong";
-        return new ResponseEntity<>(errorLoginMessage, HttpStatus.BAD_REQUEST);
+//        UserPersonalInfo userPersonalInfo = userService.getPersonalInfo(userId);
+//        if (userPersonalInfo != null) {
+//            return new ResponseEntity<>(userPersonalInfo, HttpStatus.OK);
+//        }
+//        String errorLoginMessage = "Sorry, something went wrong";
+//        return new ResponseEntity<>(errorLoginMessage, HttpStatus.BAD_REQUEST);
+        return null;
     }
 
-    @PostMapping("/postUserInfo/{id}")
+    @PostMapping("/user/postInfo/{id}")
     public ResponseEntity<Object> saveUserDetails(@RequestBody UserPersonalInfo userPersonalInfo, @PathVariable("id") Long userId) {
-        AppUser appUser = userService.getUser(userId);
-        userPersonalInfo.setUser(appUser);
-        userPersonalInfo = userService.savePersonalInfo(userPersonalInfo);
-        appUser.setUserDetails(userPersonalInfo);
-
-        String successMessage = "Success saving";
-        return new ResponseEntity<>(successMessage, HttpStatus.CREATED);
+//        AppUser appUser = userService.getUser(userId);
+//        userPersonalInfo.setUser(appUser);
+//        userPersonalInfo = userService.savePersonalInfo(userPersonalInfo);
+//        appUser.setUserDetails(userPersonalInfo);
+//
+//        String successMessage = "Success saving";
+//        return new ResponseEntity<>(successMessage, HttpStatus.CREATED);
+        return null;
     }
 }

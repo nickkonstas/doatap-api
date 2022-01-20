@@ -59,7 +59,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         String access_token = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000 ))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 100 * 60 * 1000 ))
                 .withIssuer(request.getRequestURL().toString())
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);
@@ -74,6 +74,11 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 //        response.setHeader("refresh_token", refresh_token);
 
         Map<String, String> tokens = new HashMap<>();
+
+        // If i want to return also the email of the user, but i think it's not necessary
+        // because email is inside the token
+        //tokens.put("email", user.getUsername());
+
         tokens.put("access_token", access_token);
         tokens.put("refresh_token", refresh_token);
         response.setContentType(APPLICATION_JSON_VALUE);

@@ -26,7 +26,9 @@ public class DoatapApplication {
 			userService.saveRole(new Role(null, "ROLE_ADMIN"));
 			userService.saveUser((new AppUser(null, "nikos", "konstas", "dimitris", "zoi", "nikos@mail.com", "1234", "1111", new ArrayList<>())));
 			userService.saveUser((new AppUser(null, "thanasis", "oikonomou", "panagiotis", "katerina", "thanasis@mail.com", "1234", "2222", new ArrayList<>())));
-			userService.saveUser((new AppUser(null, "admin", "admin", "kostas", "giota", "admin@mail.com", "0000", "1111", new ArrayList<>())));
+			userService.saveUser((new AppUser(null, "admin", "admin", "kostas", "giota", "admin@mail.com", "0000", "4444", new ArrayList<>())));
+			userService.saveUser((new AppUser(null, "petros", "sidirokastritis", "kostas", "giota", "petros@mail.com", "1234", "5555", new ArrayList<>())));
+
 			userService.addRoleToUser("nikos@mail.com", "ROLE_USER");
 			userService.addRoleToUser("thanasis@mail.com", "ROLE_USER");
 			userService.addRoleToUser("admin@mail.com", "ROLE_ADMIN");
@@ -36,10 +38,17 @@ public class DoatapApplication {
 		};
 	}
 
+	//@Bean
+	//public BCryptPasswordEncoder bCryptPasswordEncoder() {
+		//return new BCryptPasswordEncoder();
+	//}
+
 	@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder() {
+	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+
+
 
 
 

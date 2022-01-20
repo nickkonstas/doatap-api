@@ -1,6 +1,7 @@
 package com.hci.doatap.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -72,11 +73,15 @@ public class UserPersonalInfo {
     @Column(name = "country_of_issue")
     private String countryOfIssue;
 
-    // One-to-one relationship with user
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false, updatable = false)
-    @JsonBackReference
-    private AppUser appUser;
+//    // One-to-one relationship with user
+//    @OneToOne(fetch = FetchType.LAZY, optional = false)
+//    @JoinColumn(name = "user_id", nullable = false, updatable = false)
+//    @JsonBackReference
+//    private AppUser appUser;
+
+    @OneToOne(targetEntity = Application.class, mappedBy = "userPersonalInfo", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Application application;
 
     public UserPersonalInfo() {
     }
@@ -209,11 +214,43 @@ public class UserPersonalInfo {
         this.issuingAuthority = issuingAuthority;
     }
 
-    public AppUser getUser() {
-        return appUser;
+    public String getPassportNumber() {
+        return passportNumber;
     }
 
-    public void setUser(AppUser appUser) {
-        this.appUser = appUser;
+    public void setPassportNumber(String passportNumber) {
+        this.passportNumber = passportNumber;
     }
+
+    public Date getPassportExpirationDate() {
+        return passportExpirationDate;
+    }
+
+    public void setPassportExpirationDate(Date passportExpirationDate) {
+        this.passportExpirationDate = passportExpirationDate;
+    }
+
+    public String getCountryOfIssue() {
+        return countryOfIssue;
+    }
+
+    public void setCountryOfIssue(String countryOfIssue) {
+        this.countryOfIssue = countryOfIssue;
+    }
+
+    public Application getApplication() {
+        return application;
+    }
+
+    public void setApplication(Application application) {
+        this.application = application;
+    }
+
+    //    public AppUser getUser() {
+    //        return appUser;
+    //    }
+    //
+    //    public void setUser(AppUser appUser) {
+    //        this.appUser = appUser;
+    //    }
 }

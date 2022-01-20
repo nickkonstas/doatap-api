@@ -2,13 +2,13 @@ package com.hci.doatap.service;
 
 import com.hci.doatap.model.AppUser;
 import com.hci.doatap.model.Role;
-import com.hci.doatap.model.UserPersonalInfo;
 import com.hci.doatap.model.vo.UpdateEmail;
 import com.hci.doatap.model.vo.UpdatePassword;
 import com.hci.doatap.model.vo.UserVo;
 import com.hci.doatap.repository.PersonalInfoRepository;
 import com.hci.doatap.repository.RoleRepository;
 import com.hci.doatap.repository.UserRepository;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,21 +17,20 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 @Service
-@Transactional
 public class UserService implements UserDetailsService{
 
     private UserRepository userRepository;
     private PersonalInfoRepository personalInfoRepository;
     private RoleRepository roleRepository;
-    private BCryptPasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, PersonalInfoRepository personalInfoRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PersonalInfoRepository personalInfoRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.personalInfoRepository = personalInfoRepository;
         this.roleRepository = roleRepository;
@@ -46,14 +45,26 @@ public class UserService implements UserDetailsService{
             throw new UsernameNotFoundException("User not found in the database");
         }
 
+//        Role role = (Role) appUser.getRoles();
+//        String stringRole = role.toString();
+
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         appUser.getRoles().forEach(role -> {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         });
 
-        // Spring security user
         return new User(appUser.getEmail(), appUser.getPassword(), authorities);
+
+//        return new org.springframework.security.core.userdetails.User(appUser.getEmail(),
+//                appUser.getPassword(),
+//                true,true,true,true,
+//                getAuthorities(stringRole));
     }
+
+    private Collection<? extends GrantedAuthority> getAuthorities(String role_user) {
+        return Collections.singletonList(new SimpleGrantedAuthority(role_user));
+    }
+
 
     public AppUser saveUser(AppUser user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -88,8 +99,8 @@ public class UserService implements UserDetailsService{
         return new UserVo(returnedAppUser);
     }
 
-    public UserVo profile(String email) {
-        AppUser returnedAppUser = userRepository.findByEmail(email);
+    public UserVo getProfile(String email) {
+        AppUser returnedAppUser = getUser(email);
         if (returnedAppUser == null) {
             return null;
         }
@@ -108,7 +119,8 @@ public class UserService implements UserDetailsService{
         String oldPass = passwordForm.getOldPass();
         String email = passwordForm.getEmail();
 
-        AppUser existingAppUser = userRepository.findByEmailAndPassword(email, oldPass);
+        //AppUser existingAppUser = userRepository.findByEmailAndPassword(email, oldPass);
+        AppUser existingAppUser = getUser(email);
         if (existingAppUser != null)
             return true;
         return false;
@@ -125,7 +137,7 @@ public class UserService implements UserDetailsService{
         // Here maybe check if the new email is already used
         returnedAppUser.setEmail(newEmail);
 
-        userRepository.save(returnedAppUser);
+        saveUser(returnedAppUser);
         return new UserVo(returnedAppUser);
     }
 
@@ -140,17 +152,18 @@ public class UserService implements UserDetailsService{
 
         returnedAppUser.setPassword(newPass);
         userRepository.save(returnedAppUser);
+        //saveUser(returnedAppUser);
         return new UserVo(returnedAppUser);
     }
 
-    public UserPersonalInfo getPersonalInfo(Long id) {
-        AppUser appUser = userRepository.getById(id);
-        return appUser.getUserDetails();
-    }
+//    public UserPersonalInfo getPersonalInfo(Long id) {
+//        AppUser appUser = userRepository.getById(id);
+//        return appUser.getUserDetails();
+//    }
 
-    public UserPersonalInfo savePersonalInfo(UserPersonalInfo userPersonalInfo) {
-        userPersonalInfo = personalInfoRepository.save(userPersonalInfo);
-        return userPersonalInfo;
-    }
+//    public UserPersonalInfo savePersonalInfo(UserPersonalInfo userPersonalInfo) {
+//        userPersonalInfo = personalInfoRepository.save(userPersonalInfo);
+//        return userPersonalInfo;
+//    }
 
 }
