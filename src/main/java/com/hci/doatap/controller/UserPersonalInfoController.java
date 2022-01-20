@@ -41,6 +41,6 @@ public class UserPersonalInfoController {
             String errorMessage = "Sorry, something went wrong";
             return new ResponseEntity<>(errorMessage, HttpStatus.EXPECTATION_FAILED);
         }
-        return new ResponseEntity<>(userPersonalInfo, HttpStatus.CREATED);
+        return new ResponseEntity<>(info, HttpStatus.CREATED);
     }
 }
