@@ -68,20 +68,30 @@ public class UserProfileController {
     }
 
     @PutMapping("/user/profile/changePass")
-    public ResponseEntity<Object> updateUserPassword(@RequestBody UpdatePassword pass) {
+    public ResponseEntity<Object> updateUserPassword(@RequestBody String pass) {
 
-        if (!userService.validPass(pass)) {
-            String errorMessage = "Invalid password, no user with that email and password";
-            return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
-        }
+//        if (!userService.validPass(pass)) {
+//            String errorMessage = "Invalid password, no user with that email and password";
+//            return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+//        }
 
-        UserVo user = userService.updatedPassword(pass);
-        if (user != null) {
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        }
+//        UserVo user = userService.updatedPassword(pass);
+//        if (user != null) {
+//            return new ResponseEntity<>(user, HttpStatus.OK);
+//        }
+//
+//        String errorMessage = "Email Not Found";
+//        return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
 
-        String errorMessage = "Email Not Found";
-        return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+        AppUser user = userService.getUser(userName);
+        user.setPassword(pass);
+
+        // need saveUser method to encode the new password and
+        // then save the user in the database
+        userService.saveUser(user);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
 }

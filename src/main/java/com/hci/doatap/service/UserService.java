@@ -150,8 +150,8 @@ public class UserService implements UserDetailsService{
         }
 
         returnedAppUser.setPassword(newPass);
-        userRepository.save(returnedAppUser);
-        //saveUser(returnedAppUser);
+        //userRepository.save(returnedAppUser);
+        saveUser(returnedAppUser);
         return new UserVo(returnedAppUser);
     }
 
