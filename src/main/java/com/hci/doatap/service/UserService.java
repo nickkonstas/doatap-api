@@ -65,7 +65,6 @@ public class UserService implements UserDetailsService{
         return Collections.singletonList(new SimpleGrantedAuthority(role_user));
     }
 
-
     public AppUser saveUser(AppUser user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
@@ -137,7 +136,7 @@ public class UserService implements UserDetailsService{
         // Here maybe check if the new email is already used
         returnedAppUser.setEmail(newEmail);
 
-        saveUser(returnedAppUser);
+        userRepository.save(returnedAppUser);
         return new UserVo(returnedAppUser);
     }
 

@@ -42,6 +42,10 @@ public class UserProfileController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
         UserVo user = userService.getProfile(userName);
+        if (user == null) {
+            String errorMessage = "User with that email don't exist";
+            return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(user, HttpStatus.OK);
 
     }
