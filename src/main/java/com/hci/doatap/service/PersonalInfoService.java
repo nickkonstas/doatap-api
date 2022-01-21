@@ -19,11 +19,12 @@ public class PersonalInfoService {
 
     public UserPersonalInfo savePersonalInfo(UserPersonalInfo userPersonalInfo, Long applicationId) {
         Application application = applicationService.getApplicationById(applicationId);
+        userPersonalInfo.setApplication(application);
+        personalInfoRepository.save(userPersonalInfo);
+
         application.setUserPersonalInfo(userPersonalInfo);
         applicationService.save(application);
 
-        userPersonalInfo.setApplication(application);
-        personalInfoRepository.save(userPersonalInfo);
         return userPersonalInfo;
-    }
+   }
 }

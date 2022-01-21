@@ -24,7 +24,7 @@ public class TitleOfStudies {
     private String titleOfStudies;
 
     @Column(name = "ects")
-    private String ects;
+    private int ects;
 
     @Column(name = "registration_date")
     @Type(type = "date")
@@ -37,21 +37,41 @@ public class TitleOfStudies {
     @Column(name = "duration")
     private int durationOfStudies;
 
-    @Column(name = "remote")
-    private Boolean remoteStudies;
+//    @Column(name = "remote")
+//    private Boolean remoteStudies;
+//
+//    // If remote button in front-end is enabled
+//    @Column(name = "remote_city")
+//    private String remoteCityOfStudies;
+//
+//    @Column(name = "remote_university")
+//    private String remoteInstitutionOfStudies;
 
-    // If remote button in front-end is enabled
-    @Column(name = "remote_city")
-    private String remoteCityOfStudies;
+    @Column(name = "corr_with_university")
+    private String corrWithUniversity;
 
-    @Column(name = "remote_university")
-    private String remoteInstitutionOfStudies;
+    @Column(name = "corr_with_tei")
+    private String corrWithTei;
 
     @OneToOne(targetEntity = Application.class, mappedBy = "titleOfStudies", cascade = CascadeType.ALL)
     //@JsonManagedReference
     private Application application;
 
     public TitleOfStudies() {
+    }
+
+    public TitleOfStudies(Long id, String countryOfStudies, String university, String titleOfStudies, int ects, Date registrationDate, Date graduationDate, int durationOfStudies, String corrWithUniversity, String corrWithTei, Application application) {
+        this.id = id;
+        this.countryOfStudies = countryOfStudies;
+        this.university = university;
+        this.titleOfStudies = titleOfStudies;
+        this.ects = ects;
+        this.registrationDate = registrationDate;
+        this.graduationDate = graduationDate;
+        this.durationOfStudies = durationOfStudies;
+        this.corrWithUniversity = corrWithUniversity;
+        this.corrWithTei = corrWithTei;
+        this.application = application;
     }
 
     public Long getId() {
@@ -86,11 +106,11 @@ public class TitleOfStudies {
         this.titleOfStudies = titleOfStudies;
     }
 
-    public String getEcts() {
+    public int getEcts() {
         return ects;
     }
 
-    public void setEcts(String ects) {
+    public void setEcts(int ects) {
         this.ects = ects;
     }
 
@@ -118,27 +138,52 @@ public class TitleOfStudies {
         this.durationOfStudies = durationOfStudies;
     }
 
-    public Boolean getRemoteStudies() {
-        return remoteStudies;
+//    public Boolean getRemoteStudies() {
+//        return remoteStudies;
+//    }
+//
+//    public void setRemoteStudies(Boolean remoteStudies) {
+//        this.remoteStudies = remoteStudies;
+//    }
+//
+//    public String getRemoteCityOfStudies() {
+//        return remoteCityOfStudies;
+//    }
+//
+//    public void setRemoteCityOfStudies(String remoteCityOfStudies) {
+//        this.remoteCityOfStudies = remoteCityOfStudies;
+//    }
+//
+//    public String getRemoteInstitutionOfStudies() {
+//        return remoteInstitutionOfStudies;
+//    }
+//    public void setRemoteInstitutionOfStudies(String remoteInstitutionOfStudies) {
+//        this.remoteInstitutionOfStudies = remoteInstitutionOfStudies;
+//    }
+
+    public String getCorrWithUniversity() {
+        return corrWithUniversity;
     }
 
-    public void setRemoteStudies(Boolean remoteStudies) {
-        this.remoteStudies = remoteStudies;
+    public void setCorrWithUniversity(String corrWithUniversity) {
+        this.corrWithUniversity = corrWithUniversity;
     }
 
-    public String getRemoteCityOfStudies() {
-        return remoteCityOfStudies;
+    public String getCorrWithTei() {
+        return corrWithTei;
     }
 
-    public void setRemoteCityOfStudies(String remoteCityOfStudies) {
-        this.remoteCityOfStudies = remoteCityOfStudies;
+    public void setCorrWithTei(String corrWithTei) {
+        this.corrWithTei = corrWithTei;
     }
 
-    public String getRemoteInstitutionOfStudies() {
-        return remoteInstitutionOfStudies;
+    public Application getApplication() {
+        return application;
     }
 
-    public void setRemoteInstitutionOfStudies(String remoteInstitutionOfStudies) {
-        this.remoteInstitutionOfStudies = remoteInstitutionOfStudies;
+    public void setApplication(Application application) {
+        this.application = application;
     }
+
+
 }

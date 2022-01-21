@@ -3,10 +3,14 @@ package com.hci.doatap.service;
 
 import com.hci.doatap.model.AppUser;
 import com.hci.doatap.model.Application;
+import com.hci.doatap.model.vo.ApplicationVo;
 import com.hci.doatap.repository.ApplicationRepository;
 import com.hci.doatap.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,5 +42,17 @@ public class ApplicationService {
     public Application getApplicationById(Long id) {
         Application application = applicationRepository.findById(id).orElse(new Application());
         return application;
+    }
+
+    public List<ApplicationVo> getUserApplications(String userName) {
+        AppUser user = userService.getUser(userName);
+        List<Application> applications = user.getApplications();
+        List<ApplicationVo> returnedApplications = new ArrayList<ApplicationVo>();
+
+        Iterator<Application> it = applications.iterator();
+        while (it.hasNext()) {
+            returnedApplications.add(new ApplicationVo(it.next()));
+        }
+        return returnedApplications;
     }
 }

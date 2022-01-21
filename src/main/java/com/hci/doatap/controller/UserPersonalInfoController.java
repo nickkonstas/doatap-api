@@ -35,7 +35,7 @@ public class UserPersonalInfoController {
 
     @PostMapping("/user/postInfo/{id}")
     public ResponseEntity<Object> saveUserDetails(@RequestBody UserPersonalInfo userPersonalInfo, @PathVariable("id") Long applicationId) {
-        UserPersonalInfo info = personalInfoService.savePersonalInfo(userPersonalInfo, applicationId);
+      UserPersonalInfo info = personalInfoService.savePersonalInfo(userPersonalInfo, applicationId);
 
         if (info == null) {
             String errorMessage = "Sorry, something went wrong";

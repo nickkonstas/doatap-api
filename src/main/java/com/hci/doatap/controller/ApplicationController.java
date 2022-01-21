@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Base64;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins="http://localhost:3000")
@@ -33,6 +34,16 @@ public class ApplicationController {
         String userName = authentication.getName();
         Application returnApplication = applicationService.saveApplication(application, userName);
         return new ResponseEntity<>(returnApplication, HttpStatus.CREATED);
+    }
+
+    @GetMapping(value = "/user/getUserApplications")
+    public ResponseEntity<List<ApplicationVo>> getUserApplications() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+        List<ApplicationVo> applications = applicationService.getUserApplications(userName);
+
+        return new ResponseEntity<>(applications, HttpStatus.OK);
 
     }
 }
+

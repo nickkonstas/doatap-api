@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -45,7 +46,7 @@ public class AppUser {
     // One-to-many relationship with applications
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private Set<Application> applications;
+    private List<Application> applications;
 
 
 //    // One-to-one relationship with UserDetails
@@ -184,11 +185,11 @@ public class AppUser {
         this.roles = roles;
     }
 
-    public Set<Application> getApplications() {
+    public List<Application> getApplications() {
         return applications;
     }
 
-    public void setApplications(Set<Application> applications) {
+    public void setApplications(List<Application> applications) {
         this.applications = applications;
     }
 
