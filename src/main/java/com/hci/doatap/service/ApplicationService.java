@@ -72,4 +72,8 @@ public class ApplicationService {
         }
         return returnedApplications;
     }
+
+    public Application getApplication(Long applicationId) {
+        return getApplicationById(applicationId);
+    }
 }
