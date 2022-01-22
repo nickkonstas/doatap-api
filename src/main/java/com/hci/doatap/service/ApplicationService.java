@@ -3,11 +3,14 @@ package com.hci.doatap.service;
 
 import com.hci.doatap.model.AppUser;
 import com.hci.doatap.model.Application;
+import com.hci.doatap.model.UploadFiles;
 import com.hci.doatap.model.vo.ApplicationVo;
+import com.hci.doatap.model.vo.UploadFileVo;
 import com.hci.doatap.repository.ApplicationRepository;
 import com.hci.doatap.repository.UserRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -45,14 +48,30 @@ public class ApplicationService {
         return application;
     }
 
-    public List<ApplicationVo> getUserApplications(String userName) {
+    public List<ApplicationVo> getUserSavedApplications(String userName) {
         AppUser user = userService.getUser(userName);
         List<Application> applications = user.getApplications();
         List<ApplicationVo> returnedApplications = new ArrayList<ApplicationVo>();
 
         Iterator<Application> it = applications.iterator();
         while (it.hasNext()) {
-            returnedApplications.add(new ApplicationVo(it.next()));
+            Application current = it.next();
+            if (current.getSubmitted() == false)
+                returnedApplications.add(new ApplicationVo(it.next()));
+        }
+        return returnedApplications;
+    }
+
+    public List<ApplicationVo> getUserSubmittedApplications(String userName) {
+        AppUser user = userService.getUser(userName);
+        List<Application> applications = user.getApplications();
+        List<ApplicationVo> returnedApplications = new ArrayList<ApplicationVo>();
+
+        Iterator<Application> it = applications.iterator();
+        while (it.hasNext()) {
+            Application current = it.next();
+            if (current.getSubmitted() == true)
+                returnedApplications.add(new ApplicationVo(it.next()));
         }
         return returnedApplications;
     }
@@ -75,5 +94,11 @@ public class ApplicationService {
 
     public Application getApplication(Long applicationId) {
         return getApplicationById(applicationId);
+    }
+
+    public UploadFiles getFiles(Long applicationId) {
+        Application application = getApplication(applicationId);
+        UploadFiles files = application.getUploadFiles();
+        return files;
     }
 }

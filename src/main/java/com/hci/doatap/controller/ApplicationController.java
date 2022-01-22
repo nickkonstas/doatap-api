@@ -1,11 +1,9 @@
 package com.hci.doatap.controller;
 
 
-import com.hci.doatap.model.AppUser;
-import com.hci.doatap.model.Application;
-import com.hci.doatap.model.TitleOfStudies;
-import com.hci.doatap.model.UserPersonalInfo;
+import com.hci.doatap.model.*;
 import com.hci.doatap.model.vo.ApplicationVo;
+import com.hci.doatap.model.vo.UploadFileVo;
 import com.hci.doatap.model.vo.UserVo;
 import com.hci.doatap.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Base64;
 import java.util.List;
@@ -40,14 +39,22 @@ public class ApplicationController {
         return new ResponseEntity<>(returnApplication, HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/user/getUserApplications")
-    public ResponseEntity<List<ApplicationVo>> getUserApplications() {
+    @GetMapping(value = "/user/getUserSavedApplications")
+    public ResponseEntity<List<ApplicationVo>> getUserSavedApplications() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
-        List<ApplicationVo> applications = applicationService.getUserApplications(userName);
+        List<ApplicationVo> applications = applicationService.getUserSavedApplications(userName);
 
         return new ResponseEntity<>(applications, HttpStatus.OK);
+    }
 
+    @GetMapping(value = "/user/getUserSubmittedApplications")
+    public ResponseEntity<List<ApplicationVo>> getUserSubmittedApplications() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+        List<ApplicationVo> applications = applicationService.getUserSubmittedApplications(userName);
+
+        return new ResponseEntity<>(applications, HttpStatus.OK);
     }
 
     @GetMapping(value = "/admin/getAllApplications")
@@ -89,6 +96,12 @@ public class ApplicationController {
         AppUser user = application.getUser();
         UserVo returnedUser = new UserVo(user);
         return new ResponseEntity<>(returnedUser, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/admin/getFiles/{id}")
+    public ResponseEntity<UploadFiles> uploadUserFiles(@PathVariable("id") Long applicationId) {
+        UploadFiles files =  applicationService.getFiles(applicationId);
+        return new ResponseEntity<>(files, HttpStatus.OK);
     }
 }
 
