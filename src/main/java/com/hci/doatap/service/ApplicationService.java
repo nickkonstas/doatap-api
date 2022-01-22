@@ -57,7 +57,7 @@ public class ApplicationService {
         while (it.hasNext()) {
             Application current = it.next();
             if (current.getSubmitted() == false)
-                returnedApplications.add(new ApplicationVo(it.next()));
+                returnedApplications.add(new ApplicationVo(current));
         }
         return returnedApplications;
     }
@@ -71,7 +71,7 @@ public class ApplicationService {
         while (it.hasNext()) {
             Application current = it.next();
             if (current.getSubmitted() == true)
-                returnedApplications.add(new ApplicationVo(it.next()));
+                returnedApplications.add(new ApplicationVo(current));
         }
         return returnedApplications;
     }
