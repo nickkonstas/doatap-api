@@ -29,6 +29,9 @@ public class Application {
     @Column(name = "corr_with_all", nullable = false, updatable = false)
     private Boolean university_tei;
 
+    @Column(name = "submitted", nullable = false)
+    private Boolean submitted;
+
     @OneToOne(targetEntity = UserPersonalInfo.class)
     @JoinColumn(name = "personal_info_id", referencedColumnName = "id")
     //@JsonBackReference
@@ -39,6 +42,11 @@ public class Application {
     //@JsonBackReference
     private TitleOfStudies titleOfStudies;
 
+    @OneToOne(targetEntity = UploadFiles.class)
+    @JoinColumn(name = "upload_files_id", referencedColumnName = "id")
+    //@JsonBackReference
+    private UploadFiles uploadFiles;
+
     @JsonBackReference
     @ManyToOne
     //@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, updatable = false)
@@ -47,16 +55,27 @@ public class Application {
     public Application() {
     }
 
-    public Application(Long id, String levelOfStudies, Boolean correspondence, Boolean university, Boolean tei, Boolean university_tei, AppUser user) {
+    public Application(Long id, String levelOfStudies, Boolean correspondence, Boolean university, Boolean tei, Boolean university_tei, Boolean submitted, UserPersonalInfo userPersonalInfo, TitleOfStudies titleOfStudies, UploadFiles uploadFiles, AppUser user) {
         this.id = id;
         this.levelOfStudies = levelOfStudies;
         this.correspondence = correspondence;
         this.university = university;
         this.tei = tei;
         this.university_tei = university_tei;
+        this.submitted = submitted;
+        this.userPersonalInfo = userPersonalInfo;
+        this.titleOfStudies = titleOfStudies;
+        this.uploadFiles = uploadFiles;
         this.user = user;
     }
 
+    public Boolean getSubmitted() {
+        return submitted;
+    }
+
+    public void setSubmitted(Boolean submitted) {
+        this.submitted = submitted;
+    }
 
     public Long getId() {
         return id;
@@ -68,6 +87,14 @@ public class Application {
 
     public String getLevelOfStudies() {
         return levelOfStudies;
+    }
+
+    public UploadFiles getUploadFiles() {
+        return uploadFiles;
+    }
+
+    public void setUploadFiles(UploadFiles uploadFiles) {
+        this.uploadFiles = uploadFiles;
     }
 
     public void setLevelOfStudies(String levelOfStudies) {

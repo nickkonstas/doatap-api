@@ -8,7 +8,8 @@ public class ApplicationVo {
     private Boolean correspondence;
     private Boolean university;
     private Boolean tei;
-    private Boolean university_tei;
+    private Boolean universityAndTei;
+    private Boolean submitted;
 
     public ApplicationVo() {
     }
@@ -19,16 +20,17 @@ public class ApplicationVo {
         this.correspondence = application.getCorrespondence();
         this.university = application.getUniversity();
         this.tei = application.getTei();
-        this.university_tei = application.getUniversity_tei();
+        this.universityAndTei = application.getUniversity_tei();
     }
 
-    public ApplicationVo(Long id, String levelOfStudies, Boolean correspondence, Boolean university, Boolean tei, Boolean university_tei) {
+    public ApplicationVo(Long id, String levelOfStudies, Boolean correspondence, Boolean university, Boolean tei, Boolean university_tei, Boolean submit) {
         this.id = id;
         this.levelOfStudies = levelOfStudies;
         this.correspondence = correspondence;
         this.university = university;
         this.tei = tei;
-        this.university_tei = university_tei;
+        this.universityAndTei = university_tei;
+        this.submitted = submit;
     }
 
     public Long getId() {
@@ -39,13 +41,7 @@ public class ApplicationVo {
         this.id = id;
     }
 
-    public Boolean getUniversityTei() {
-        return university_tei;
-    }
 
-    public void setUniversityTei(Boolean universityTei) {
-        this.university_tei = universityTei;
-    }
 
     public String getLevelOfStudies() {
         return levelOfStudies;
@@ -79,11 +75,19 @@ public class ApplicationVo {
         this.tei = tei;
     }
 
-    public Boolean getUniversity_tei() {
-        return university_tei;
+    public Boolean getUniversityAndTei() {
+        return universityAndTei;
     }
 
-    public void setUniversity_tei(Boolean university_tei) {
-        this.university_tei = university_tei;
+    public void setUniversityAndTei(Boolean universityAndTei) {
+        this.universityAndTei = universityAndTei;
+    }
+
+    public Boolean getSubmitted() {
+        return submitted;
+    }
+
+    public void setSubmitted(Boolean submitted) {
+        this.submitted = submitted;
     }
 }
