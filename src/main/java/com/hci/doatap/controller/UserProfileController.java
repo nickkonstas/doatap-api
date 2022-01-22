@@ -50,6 +50,20 @@ public class UserProfileController {
 
     }
 
+    @GetMapping("/admin/profile")
+    public ResponseEntity<Object> profileAdmin() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+        UserVo user = userService.getProfile(userName);
+        if (user == null) {
+            String errorMessage = "User with that email don't exist";
+            return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(user, HttpStatus.OK);
+
+    }
+
     @PutMapping(value = "/user/profile/changeEmail")
     public ResponseEntity<Object> updateUserEmail(@RequestBody UpdateEmail emailForm) {
 

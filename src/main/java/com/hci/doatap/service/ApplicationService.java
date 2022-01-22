@@ -6,6 +6,7 @@ import com.hci.doatap.model.Application;
 import com.hci.doatap.model.vo.ApplicationVo;
 import com.hci.doatap.repository.ApplicationRepository;
 import com.hci.doatap.repository.UserRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -52,6 +53,20 @@ public class ApplicationService {
         Iterator<Application> it = applications.iterator();
         while (it.hasNext()) {
             returnedApplications.add(new ApplicationVo(it.next()));
+        }
+        return returnedApplications;
+    }
+
+
+    public List<ApplicationVo> getAllApplications() {
+        List<Application> applications = applicationRepository.findAllByOrderByIdAsc();
+        List<ApplicationVo> returnedApplications = new ArrayList<ApplicationVo>();
+
+        Iterator<Application> it = applications.iterator();
+        while (it.hasNext()) {
+            if (it.next().getSubmitted() == true) {
+                returnedApplications.add(new ApplicationVo(it.next()));
+            }
         }
         return returnedApplications;
     }

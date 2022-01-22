@@ -14,4 +14,6 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
 
     @Override
     List<Application> findAllById(Iterable<Long> longs);
+
+    List<Application> findAllByOrderByIdAsc();
 }

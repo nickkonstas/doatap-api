@@ -45,5 +45,12 @@ public class ApplicationController {
         return new ResponseEntity<>(applications, HttpStatus.OK);
 
     }
+
+    @GetMapping(value = "/admin/getAllApplications")
+    public ResponseEntity<List<ApplicationVo>> getAdminApplications() {
+        List<ApplicationVo> allApplications = applicationService.getAllApplications();
+
+        return new ResponseEntity<>(allApplications, HttpStatus.OK);
+    }
 }
 
