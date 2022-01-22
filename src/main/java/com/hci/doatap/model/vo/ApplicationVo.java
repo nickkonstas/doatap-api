@@ -21,6 +21,7 @@ public class ApplicationVo {
         this.university = application.getUniversity();
         this.tei = application.getTei();
         this.universityAndTei = application.getUniversity_tei();
+        this.submitted = application.getSubmitted();
     }
 
     public ApplicationVo(Long id, String levelOfStudies, Boolean correspondence, Boolean university, Boolean tei, Boolean university_tei, Boolean submit) {

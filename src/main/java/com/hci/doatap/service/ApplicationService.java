@@ -59,13 +59,15 @@ public class ApplicationService {
 
 
     public List<ApplicationVo> getAllApplications() {
-        List<Application> applications = applicationRepository.findAllByOrderByIdAsc();
+        List<Application> applications = applicationRepository.findAll();
         List<ApplicationVo> returnedApplications = new ArrayList<ApplicationVo>();
 
         Iterator<Application> it = applications.iterator();
         while (it.hasNext()) {
-            if (it.next().getSubmitted() == true) {
-                returnedApplications.add(new ApplicationVo(it.next()));
+            Application currentApplication = it.next();
+            if (currentApplication.getSubmitted() == true) {
+
+                returnedApplications.add(new ApplicationVo(currentApplication));
             }
         }
         return returnedApplications;
