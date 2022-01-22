@@ -96,9 +96,14 @@ public class ApplicationService {
         return getApplicationById(applicationId);
     }
 
-    public UploadFiles getFiles(Long applicationId) {
+    public void deleteApplication(Long applicationId) {
         Application application = getApplication(applicationId);
-        UploadFiles files = application.getUploadFiles();
-        return files;
+        applicationRepository.delete(application);
     }
+
+//    public UploadFiles getFiles(Long applicationId) {
+//        Application application = getApplication(applicationId);
+//        UploadFiles files = application.getUploadFiles();
+//        return files;
+//    }
 }

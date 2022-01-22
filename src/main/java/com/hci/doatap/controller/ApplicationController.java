@@ -98,10 +98,16 @@ public class ApplicationController {
         return new ResponseEntity<>(returnedUser, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/admin/getFiles/{id}")
-    public ResponseEntity<UploadFiles> uploadUserFiles(@PathVariable("id") Long applicationId) {
-        UploadFiles files =  applicationService.getFiles(applicationId);
-        return new ResponseEntity<>(files, HttpStatus.OK);
+//    @GetMapping(value = "/admin/getFiles/{id}")
+//    public ResponseEntity<UploadFiles> uploadUserFiles(@PathVariable("id") Long applicationId) {
+//        UploadFiles files =  applicationService.getFiles(applicationId);
+//        return new ResponseEntity<>(files, HttpStatus.OK);
+//    }
+
+    @DeleteMapping(value = "/user/deleteApplication/{id}")
+    public ResponseEntity<Object> deleteApplication (@PathVariable("id") Long applicationId) {
+        applicationService.deleteApplication(applicationId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
 
