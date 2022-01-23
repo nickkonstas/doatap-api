@@ -1,11 +1,10 @@
 package com.hci.doatap.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 @Entity
 @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
@@ -32,10 +31,10 @@ public class Application {
     @Column(name = "submitted", nullable = false)
     private Boolean submitted;
 
-    @Column(name = "accepted")
-    private Boolean accepted;
+    @Column(name = "accepted", nullable = false)
+    private String accepted;
 
-    @Column(name = "message")
+    @Column(name = "message", nullable = false)
     private String message;
 
     @OneToOne(targetEntity = UserPersonalInfo.class)
@@ -61,7 +60,8 @@ public class Application {
     public Application() {
     }
 
-    public Application(Long id, String levelOfStudies, Boolean correspondence, Boolean university, Boolean tei, Boolean university_tei, Boolean submitted, UserPersonalInfo userPersonalInfo, TitleOfStudies titleOfStudies, UploadFiles uploadFiles, AppUser user) {
+
+    public Application(Long id, String levelOfStudies, Boolean correspondence, Boolean university, Boolean tei, Boolean university_tei, Boolean submitted, String accepted, String message, UserPersonalInfo userPersonalInfo, TitleOfStudies titleOfStudies, UploadFiles uploadFiles, AppUser user) {
         this.id = id;
         this.levelOfStudies = levelOfStudies;
         this.correspondence = correspondence;
@@ -69,17 +69,19 @@ public class Application {
         this.tei = tei;
         this.university_tei = university_tei;
         this.submitted = submitted;
+        this.accepted = accepted;
+        this.message = message;
         this.userPersonalInfo = userPersonalInfo;
         this.titleOfStudies = titleOfStudies;
         this.uploadFiles = uploadFiles;
         this.user = user;
     }
 
-    public Boolean getAccepted() {
+    public String getAccepted() {
         return accepted;
     }
 
-    public void setAccepted(Boolean accepted) {
+    public void setAccepted(String accepted) {
         this.accepted = accepted;
     }
 

@@ -4,18 +4,14 @@ package com.hci.doatap.controller;
 import com.hci.doatap.model.*;
 import com.hci.doatap.model.vo.*;
 import com.hci.doatap.service.ApplicationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -124,12 +120,14 @@ public class ApplicationController {
 
     // Admin's decision and message
     @PostMapping(value = "/admin/decide/{id}")
-    public ResponseEntity<Object> postDecision(@RequestBody AdminDecision decision, @PathVariable("id") Long applicationId) {
+    public ResponseEntity<Object> postDecision(@RequestBody Decision decision, @PathVariable("id") Long applicationId) {
         ApplicationVo applicationVo = applicationService.adminDecision(applicationId, decision);
         return new ResponseEntity<>(applicationVo, HttpStatus.OK);
     }
 
-    // Get user's application final decision and message
+//    // Get user's application final decision and message
+//    @GetMapping(value = "/user/getDecision/{id}")
+//    public ResponseEntity<Object> getDecision(@PathVariable("id"))
 
 }
 

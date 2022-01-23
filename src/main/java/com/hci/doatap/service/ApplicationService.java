@@ -4,20 +4,16 @@ package com.hci.doatap.service;
 import com.hci.doatap.model.AppUser;
 import com.hci.doatap.model.Application;
 import com.hci.doatap.model.UploadFiles;
-import com.hci.doatap.model.vo.AdminDecision;
+import com.hci.doatap.model.vo.Decision;
 import com.hci.doatap.model.vo.ApplicationVo;
 import com.hci.doatap.model.vo.FileTitles;
-import com.hci.doatap.model.vo.UploadFileVo;
 import com.hci.doatap.repository.ApplicationRepository;
 import com.hci.doatap.repository.UserRepository;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ApplicationService {
@@ -35,6 +31,7 @@ public class ApplicationService {
     public Application saveApplication(Application application, String userName) {
         AppUser user = userService.getUser(userName);
         application.setUser(user);
+
         user.getApplications().add(application);
         applicationRepository.save(application);
         userRepository.save(user);
@@ -86,8 +83,7 @@ public class ApplicationService {
         Iterator<Application> it = applications.iterator();
         while (it.hasNext()) {
             Application currentApplication = it.next();
-            if (currentApplication.getSubmitted() == true) {
-
+            if (currentApplication.getSubmitted() == true && currentApplication.getAccepted() == null) {
                 returnedApplications.add(new ApplicationVo(currentApplication));
             }
         }
@@ -135,10 +131,11 @@ public class ApplicationService {
         return returnedDocument;
     }
 
-    public ApplicationVo adminDecision(Long applicationId, AdminDecision decision) {
+    public ApplicationVo adminDecision(Long applicationId, Decision decision) {
         Application application = getApplication(applicationId);
         application.setAccepted(decision.getDecision());
         application.setMessage(decision.getMessage());
+        applicationRepository.save(application);
 
         ApplicationVo returnedApplication = new ApplicationVo(application);
         return returnedApplication;

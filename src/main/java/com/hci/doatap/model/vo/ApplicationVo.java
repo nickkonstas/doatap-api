@@ -10,7 +10,7 @@ public class ApplicationVo {
     private Boolean tei;
     private Boolean universityAndTei;
     private Boolean submitted;
-    private Boolean accepted;
+    private String accepted;
     private String message;
 
     public ApplicationVo() {
@@ -28,7 +28,7 @@ public class ApplicationVo {
         this.message = application.getMessage();
     }
 
-    public ApplicationVo(Long id, String levelOfStudies, Boolean correspondence, Boolean university, Boolean tei, Boolean university_tei, Boolean submit, Boolean accepted, String message) {
+    public ApplicationVo(Long id, String levelOfStudies, Boolean correspondence, Boolean university, Boolean tei, Boolean university_tei, Boolean submit, String accepted, String message) {
         this.id = id;
         this.levelOfStudies = levelOfStudies;
         this.correspondence = correspondence;
