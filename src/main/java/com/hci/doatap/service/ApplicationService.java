@@ -117,11 +117,11 @@ public class ApplicationService {
         Application application = getApplication(applicationId);
         UploadFiles files = application.getUploadFiles();
         byte[] returnedDocument = new byte[]{};
-        if (title == files.getParavolo()) {
+        if (title.equals(files.getParavolo())) {
             returnedDocument = files.getParavoloContent();
         }
 
-        else if (title == files.getTitle()) {
+        else if (title.equals(files.getTitle())) {
             returnedDocument = files.getTitleContent();
         }
 
