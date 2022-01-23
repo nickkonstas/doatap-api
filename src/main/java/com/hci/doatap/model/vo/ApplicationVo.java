@@ -1,5 +1,6 @@
 package com.hci.doatap.model.vo;
 
+import com.hci.doatap.model.AppUser;
 import com.hci.doatap.model.Application;
 
 public class ApplicationVo {
@@ -96,5 +97,21 @@ public class ApplicationVo {
 
     public void setSubmitted(Boolean submitted) {
         this.submitted = submitted;
+    }
+
+    public String getAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(String accepted) {
+        this.accepted = accepted;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
