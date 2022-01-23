@@ -2,11 +2,10 @@ package com.hci.doatap.controller;
 
 
 import com.hci.doatap.model.*;
-import com.hci.doatap.model.vo.ApplicationVo;
-import com.hci.doatap.model.vo.UploadFileVo;
-import com.hci.doatap.model.vo.UserVo;
+import com.hci.doatap.model.vo.*;
 import com.hci.doatap.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -109,5 +108,28 @@ public class ApplicationController {
         applicationService.deleteApplication(applicationId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping(value = "/admin/getFileTitles/{id}")
+    public ResponseEntity<Object> getFileTitles(@PathVariable("id") Long applicationId) {
+        FileTitles fileTitles = applicationService.getFileTitles(applicationId);
+        return new ResponseEntity<>(fileTitles, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/admin/getPdf/{id}/{fileTitle}")
+    public HttpEntity<byte[]> getPdf(@PathVariable("id") Long applicationId, @PathVariable("fileTitle") String title) {
+
+        byte[] document = applicationService.getDocument(applicationId, title);
+        return new ResponseEntity<>(document, HttpStatus.OK);
+    }
+
+    // Admin's decision and message
+    @PostMapping(value = "/admin/decide/{id}")
+    public ResponseEntity<Object> postDecision(@RequestBody AdminDecision decision, @PathVariable("id") Long applicationId) {
+        ApplicationVo applicationVo = applicationService.adminDecision(applicationId, decision);
+        return new ResponseEntity<>(applicationVo, HttpStatus.OK);
+    }
+
+    // Get user's application final decision and message
+
 }
 

@@ -10,6 +10,8 @@ public class ApplicationVo {
     private Boolean tei;
     private Boolean universityAndTei;
     private Boolean submitted;
+    private Boolean accepted;
+    private String message;
 
     public ApplicationVo() {
     }
@@ -22,9 +24,11 @@ public class ApplicationVo {
         this.tei = application.getTei();
         this.universityAndTei = application.getUniversity_tei();
         this.submitted = application.getSubmitted();
+        this.accepted = application.getAccepted();
+        this.message = application.getMessage();
     }
 
-    public ApplicationVo(Long id, String levelOfStudies, Boolean correspondence, Boolean university, Boolean tei, Boolean university_tei, Boolean submit) {
+    public ApplicationVo(Long id, String levelOfStudies, Boolean correspondence, Boolean university, Boolean tei, Boolean university_tei, Boolean submit, Boolean accepted, String message) {
         this.id = id;
         this.levelOfStudies = levelOfStudies;
         this.correspondence = correspondence;
@@ -32,6 +36,8 @@ public class ApplicationVo {
         this.tei = tei;
         this.universityAndTei = university_tei;
         this.submitted = submit;
+        this.accepted = accepted;
+        this.message = message;
     }
 
     public Long getId() {

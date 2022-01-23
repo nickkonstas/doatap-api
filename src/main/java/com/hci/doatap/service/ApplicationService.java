@@ -4,7 +4,9 @@ package com.hci.doatap.service;
 import com.hci.doatap.model.AppUser;
 import com.hci.doatap.model.Application;
 import com.hci.doatap.model.UploadFiles;
+import com.hci.doatap.model.vo.AdminDecision;
 import com.hci.doatap.model.vo.ApplicationVo;
+import com.hci.doatap.model.vo.FileTitles;
 import com.hci.doatap.model.vo.UploadFileVo;
 import com.hci.doatap.repository.ApplicationRepository;
 import com.hci.doatap.repository.UserRepository;
@@ -99,6 +101,48 @@ public class ApplicationService {
     public void deleteApplication(Long applicationId) {
         Application application = getApplication(applicationId);
         applicationRepository.delete(application);
+    }
+
+    // Return the titles of the files to download
+    public FileTitles getFileTitles(Long applicationId) {
+        Application application = getApplication(applicationId);
+        UploadFiles files = application.getUploadFiles();
+        String paravolo = files.getParavolo();
+        String title = files.getTitle();
+        String vathmologia = files.getVathmologia();
+        String comment = files.getComment();
+
+        FileTitles fileTitles= new FileTitles(paravolo, title, vathmologia, comment);
+        return fileTitles;
+
+    }
+
+    public byte[] getDocument(Long applicationId, String title) {
+        Application application = getApplication(applicationId);
+        UploadFiles files = application.getUploadFiles();
+        byte[] returnedDocument = new byte[]{};
+        if (title == files.getParavolo()) {
+            returnedDocument = files.getParavoloContent();
+        }
+
+        else if (title == files.getTitle()) {
+            returnedDocument = files.getTitleContent();
+        }
+
+        else {
+            returnedDocument = files.getVathmologiaContent();
+        }
+        return returnedDocument;
+    }
+
+    public ApplicationVo adminDecision(Long applicationId, AdminDecision decision) {
+        Application application = getApplication(applicationId);
+        application.setAccepted(decision.getDecision());
+        application.setMessage(decision.getMessage());
+
+        ApplicationVo returnedApplication = new ApplicationVo(application);
+        return returnedApplication;
+
     }
 
 //    public UploadFiles getFiles(Long applicationId) {

@@ -32,6 +32,12 @@ public class Application {
     @Column(name = "submitted", nullable = false)
     private Boolean submitted;
 
+    @Column(name = "accepted")
+    private Boolean accepted;
+
+    @Column(name = "message")
+    private String message;
+
     @OneToOne(targetEntity = UserPersonalInfo.class)
     @JoinColumn(name = "personal_info_id", referencedColumnName = "id")
     //@JsonBackReference
@@ -67,6 +73,22 @@ public class Application {
         this.titleOfStudies = titleOfStudies;
         this.uploadFiles = uploadFiles;
         this.user = user;
+    }
+
+    public Boolean getAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(Boolean accepted) {
+        this.accepted = accepted;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public Boolean getSubmitted() {
