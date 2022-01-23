@@ -83,7 +83,7 @@ public class ApplicationService {
         Iterator<Application> it = applications.iterator();
         while (it.hasNext()) {
             Application currentApplication = it.next();
-            if (currentApplication.getSubmitted() == true && currentApplication.getAccepted() == "Waiting") {
+            if (currentApplication.getSubmitted() == true && currentApplication.getAccepted().equals("waiting")) {
                 returnedApplications.add(new ApplicationVo(currentApplication));
             }
         }
